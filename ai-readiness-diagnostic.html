@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onboarding Readiness Diagnostic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C2B26; --ink-soft:#4B5B54;
+  --paper:#F6F3EA; --paper2:#EDE7D8; --panel:#FFFFFF;
+  --line:#D9D0BC;
+  --accent:#AE5A2A; --accent-soft:#F1DFC9;
+  --teal:#2F6B5E; --teal-soft:#DCEAE4;
+  --amber:#B4832F; --amber-soft:#F3E7CB;
+  --serif:'Fraunces',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#F1EEE4; --ink-soft:#B9C2BB;
+    --paper:#151D1A; --paper2:#1D2622; --panel:#1B2420;
+    --line:#33413A; --accent-soft:#3A2A1D; --teal-soft:#1D2E29; --amber-soft:#3A2F1B;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F1EEE4; --ink-soft:#B9C2BB;
+  --paper:#151D1A; --paper2:#1D2622; --panel:#1B2420;
+  --line:#33413A; --accent-soft:#3A2A1D; --teal-soft:#1D2E29; --amber-soft:#3A2F1B;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;letter-spacing:-0.01em}
+.wrap{max-width:640px;margin:0 auto;padding:32px 22px 80px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-size:17px;letter-spacing:-0.01em}
+.navlink{background:none;border:none;color:var(--ink-soft);font-size:14px;padding:6px 10px;border-radius:6px}
+.navlink:hover{color:var(--ink);background:var(--paper2)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;border:1px solid transparent;font-size:15px;font-weight:500;transition:transform .12s ease}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#96491f}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{background:var(--paper2)}
+.btn-text{background:none;border:none;color:var(--ink-soft);font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:500;margin-bottom:10px}
+.hero h1{font-size:38px;line-height:1.12;max-width:11ch}
+.hero p{color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:46ch;margin-top:16px}
+.actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.dimgrid{margin-top:44px;border-top:1px solid var(--line)}
+.dimrow{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.dimrow .k{color:var(--ink)}
+.dimrow .v{color:var(--ink-soft);text-align:right;max-width:60%}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px}
+.progressbar{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:28px}
+.progressbar i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+.qmeta{font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.qprompt{font-size:22px;line-height:1.35;margin-bottom:24px;max-width:26ch}
+.scale{display:flex;gap:8px}
+.scaleopt{flex:1;padding:14px 4px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:center;font-size:15px;font-weight:500;color:var(--ink-soft)}
+.scaleopt:hover{border-color:var(--accent)}
+.scaleopt.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.scalecaps{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.choicelist{display:flex;flex-direction:column;gap:10px}
+.choiceopt{text-align:left;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-size:15px;color:var(--ink)}
+.choiceopt:hover{border-color:var(--accent)}
+.choiceopt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.qnav{display:flex;justify-content:space-between;margin-top:30px}
+.overlay{position:fixed;inset:0;background:rgba(10,15,13,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.walkcard{background:var(--panel);border-radius:12px;max-width:420px;width:100%;padding:30px;border:1px solid var(--line)}
+.walkstep{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px}
+.walkcard h3{font-size:21px;margin-bottom:12px;line-height:1.3}
+.walkcard p{color:var(--ink-soft);font-size:15px;line-height:1.6}
+.dots{display:flex;gap:6px;margin:22px 0}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--accent)}
+.walkfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.gaugewrap{display:flex;align-items:center;gap:22px;margin:26px 0}
+.gauge{width:104px;height:104px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gauge span{background:var(--panel);width:78px;height:78px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge b{font-family:var(--serif);font-size:24px}
+.gauge small{font-size:10px;color:var(--ink-soft)}
+.profilename{font-family:var(--serif);font-size:26px}
+.profilenote{color:var(--ink-soft);font-size:14px;margin-top:6px;line-height:1.5}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th{text-align:left;font-size:12px;color:var(--ink-soft);font-weight:500;padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:12px 6px;border-bottom:1px solid var(--line);font-size:14px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.tag-strong{background:var(--teal-soft);color:var(--teal)}
+.tag-mod{background:var(--amber-soft);color:var(--amber)}
+.tag-low{background:var(--accent-soft);color:var(--accent)}
+.tag-high{background:var(--accent-soft);color:var(--accent)}
+.tag-med{background:var(--amber-soft);color:var(--amber)}
+.tag-maintain{background:var(--teal-soft);color:var(--teal)}
+.sectiontitle{font-size:13px;color:var(--ink-soft);text-transform:none;margin:40px 0 14px;padding-top:26px;border-top:1px solid var(--line)}
+.pathlist{display:flex;flex-direction:column}
+.pathitem{display:flex;gap:14px;padding:14px 0}
+.pathitem .num{width:26px;height:26px;border-radius:50%;background:var(--paper2);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.pathitem .num.check{background:var(--teal);color:#fff}
+.pathitem .t{font-size:15px;padding-top:3px}
+.pathline{width:1px;background:var(--line);margin-left:13px}
+.summarybox{background:var(--paper2);border-radius:8px;padding:20px;font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+.summarybox b{color:var(--ink);font-weight:600}
+.aboutdim{border-bottom:1px solid var(--line);padding:16px 0}
+.aboutdim h3{font-size:16px;margin-bottom:6px}
+.aboutdim p{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0}
+.smallcaps{font-size:12px;color:var(--ink-soft)}
+@media(max-width:480px){.hero h1{font-size:30px}.scale{flex-wrap:wrap}.scaleopt{min-width:18%}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">Readiness&nbsp;Diagnostic</div>
+  <button class="navlink" id="topnav"></button>
+</div>
+<div id="app"></div>
+
+<script>
+const DIMS = {
+  role:{label:"Role confidence", blurb:"Confidence performing core day-to-day responsibilities.", module:"Role Fundamentals Refresher"},
+  product:{label:"Product knowledge", blurb:"Existing familiarity with the products, services or domain.", module:"Product Microlearning"},
+  process:{label:"Process confidence", blurb:"Comfort navigating unfamiliar workflows and systems.", module:"Process Walkthrough"},
+  ambiguity:{label:"Ambiguity tolerance", blurb:"How they respond when a situation isn't clearly defined.", module:"Scenario-Based Decision Practice"},
+  help:{label:"Help-seeking", blurb:"Willingness to ask for support rather than stall.", module:"Psychological-Safety Coaching"},
+  ownership:{label:"Ownership orientation", blurb:"Willingness to act without waiting for full instructions.", module:"Guided Independence Plan"},
+  comm:{label:"Communication confidence", blurb:"Comfort raising questions or updates with stakeholders.", module:"Stakeholder Communication Coaching"}
+};
+const ORDER = ["role","product","process","ambiguity","help","ownership","comm"];
+const QUESTIONS = [
+  {key:"role", type:"scale", prompt:"How confident do you feel handling your core day-to-day responsibilities right now?"},
+  {key:"product", type:"scale", prompt:"How familiar are you with the products or services you'll be working with?"},
+  {key:"process", type:"scale", prompt:"How comfortable are you navigating a workflow or system you haven't used before?"},
+  {key:"ambiguity", type:"scale", prompt:"How comfortable are you making a decision when you don't have all the information?"},
+  {key:"help", type:"choice", prompt:"When you're not sure what to do next, what do you usually do?", options:[
+    {label:"Ask a colleague or my manager", value:5},
+    {label:"Look it up in documentation or past examples", value:4},
+    {label:"Try to work it out on my own first", value:2},
+    {label:"Wait until someone tells me what to do", value:1}
+  ]},
+  {key:"ownership", type:"scale", prompt:"How true is this for you — \u201cI'd rather try something and adjust than wait for complete instructions\u201d?"},
+  {key:"comm", type:"scale", prompt:"How comfortable are you raising questions or updates with your manager or stakeholders?"}
+];
+const SCALE_CAPS = ["Not at all","Somewhat","Neutral","Fairly","Very"];
+
+const WALK = [
+  {step:"1 of 4", title:"This isn't a test", body:"It's a short Day-1 check-in. There's no pass or fail — it just helps us understand where you're starting from, so your first month is built around you instead of a generic checklist."},
+  {step:"2 of 4", title:"Seven quick questions", body:"Most are a 1–5 scale, one asks how you typically handle uncertainty. Answer with your gut reaction — it takes under two minutes."},
+  {step:"3 of 4", title:"You'll get a Readiness Profile", body:"Your answers turn into a short profile: what you're already strong at, what to prioritise, and a suggested learning path for the next 30 days."},
+  {step:"4 of 4", title:"Your manager sees the summary, not your raw answers", body:"They get the profile and the recommended path — so the conversation starts from 'here's your plan' instead of a blank slate."}
+];
+
+let state = { view:"welcome", walkOn:false, walkStep:0, qIndex:0, answers:{}, name:"" };
+
+function go(view){ state.view = view; if(view==="diagnostic"){ state.qIndex=0; state.answers={}; } render(); window.scrollTo(0,0); }
+
+function render(){
+  const topnav = document.getElementById("topnav");
+  topnav.style.display = (state.view==="welcome"||state.view==="about") ? "inline-flex" : "none";
+  topnav.textContent = state.view==="welcome" ? "About this tool" : "Back";
+  topnav.onclick = () => go(state.view==="welcome" ? "about" : "welcome");
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  if(state.view==="welcome") app.appendChild(viewWelcome());
+  if(state.view==="about") app.appendChild(viewAbout());
+  if(state.view==="diagnostic") app.appendChild(viewDiagnostic());
+  if(state.view==="results") app.appendChild(viewResults());
+  if(state.walkOn) app.appendChild(viewWalkOverlay());
+}
+
+function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstChild; }
+
+function viewWelcome(){
+  const wrap = el(`<div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Onboarding Readiness Diagnostic</div>
+      <h1>What does a new joiner actually need in their first 30 days?</h1>
+      <p>Instead of running every new hire through the same fixed onboarding sequence, this builds a starting profile from their own answers, then recommends where Month 1 should focus.</p>
+      <div class="actions">
+        <button class="btn btn-primary" id="walkBtn">Take the walkthrough</button>
+        <button class="btn btn-ghost" id="skipBtn">Skip — try it myself</button>
+      </div>
+    </div>
+    <div class="dimgrid">
+      ${ORDER.map(k=>`<div class="dimrow"><span class="k">${DIMS[k].label}</span><span class="v">${DIMS[k].blurb}</span></div>`).join("")}
+    </div>
+  </div>`);
+  wrap.querySelector("#walkBtn").onclick = ()=>{ state.walkOn=true; state.walkStep=0; render(); };
+  wrap.querySelector("#skipBtn").onclick = ()=> go("diagnostic");
+  return wrap;
+}
+
+function viewWalkOverlay(){
+  const s = WALK[state.walkStep];
+  const last = state.walkStep === WALK.length-1;
+  const ov = el(`<div class="overlay">
+    <div class="walkcard">
+      <div class="walkstep">${s.step}</div>
+      <h3>${s.title}</h3>
+      <p>${s.body}</p>
+      <div class="dots">${WALK.map((_,i)=>`<span class="dot ${i===state.walkStep?'on':''}"></span>`).join("")}</div>
+      <div class="walkfoot">
+        <button class="btn-text" id="wSkip">Skip walkthrough</button>
+        <button class="btn btn-primary" id="wNext">${last ? "Start diagnostic" : "Next"}</button>
+      </div>
+    </div>
+  </div>`);
+  ov.querySelector("#wSkip").onclick = ()=>{ state.walkOn=false; go("diagnostic"); };
+  ov.querySelector("#wNext").onclick = ()=>{
+    if(last){ state.walkOn=false; go("diagnostic"); }
+    else { state.walkStep++; render(); }
+  };
+  return ov;
+}
+
+function viewAbout(){
+  const wrap = el(`<div class="wrap">
+    <div class="eyebrow">The idea</div>
+    <h1 style="font-size:30px;max-width:20ch">Why a Day-1 diagnostic instead of a standard onboarding checklist</h1>
+    <p style="color:var(--ink-soft);line-height:1.65;margin-top:16px">Most onboarding treats every new joiner the same, regardless of what they walk in already knowing, or how they naturally respond to uncertainty. This tool takes seven short signals from a new hire and turns them into a working profile that shapes what their first month should emphasise.</p>
+    <div class="sectiontitle">What it measures</div>
+    ${ORDER.map(k=>`<div class="aboutdim"><h3>${DIMS[k].label}</h3><p>${DIMS[k].blurb}</p></div>`).join("")}
+    <div class="sectiontitle">How the profile is built</div>
+    <div class="pathlist">
+      <div class="pathitem"><div class="num">1</div><div class="t">The new hire answers seven questions — six on a 1–5 scale, one about how they handle not knowing what to do next.</div></div>
+      <div class="pathitem"><div class="num">2</div><div class="t">Each dimension is scored into a signal (Low / Moderate / Strong) and a Month-1 priority (High / Medium / Maintain).</div></div>
+      <div class="pathitem"><div class="num">3</div><div class="t">The pattern across help-seeking and ownership places them into a working profile type, like "Supported Explorer" or "Independent Builder".</div></div>
+      <div class="pathitem"><div class="num">4</div><div class="t">A recommended learning path and a short manager summary are generated from the priority list — nothing here needs writing by hand.</div></div>
+    </div>
+    <div class="actions" style="margin-top:30px"><button class="btn btn-primary" id="tryBtn">Try the diagnostic</button></div>
+  </div>`);
+  wrap.querySelector("#tryBtn").onclick = ()=> go("diagnostic");
+  return wrap;
+}
+
+function viewDiagnostic(){
+  const q = QUESTIONS[state.qIndex];
+  const pct = Math.round((state.qIndex)/QUESTIONS.length*100);
+  const wrap = el(`<div class="wrap">
+    <div class="progressbar"><i style="width:${pct}%"></i></div>
+    <div class="qmeta">Question ${state.qIndex+1} of ${QUESTIONS.length}</div>
+    <div class="qprompt">${q.prompt}</div>
+    <div id="qbody"></div>
+    <div class="qnav">
+      <button class="btn-text" id="backBtn" style="${state.qIndex===0?'visibility:hidden':''}">Back</button>
+      <button class="btn btn-primary" id="nextBtn" disabled>Continue</button>
+    </div>
+  </div>`);
+  const body = wrap.querySelector("#qbody");
+  const nextBtn = wrap.querySelector("#nextBtn");
+  if(state.answers[q.key] !== undefined) nextBtn.disabled = false;
+
+  if(q.type==="scale"){
+    const row = el(`<div class="scale">${[1,2,3,4,5].map(v=>`<button class="scaleopt ${state.answers[q.key]===v?'sel':''}" data-v="${v}">${v}</button>`).join("")}</div>`);
+    body.appendChild(row);
+    body.appendChild(el(`<div class="scalecaps"><span>${SCALE_CAPS[0]}</span><span>${SCALE_CAPS[4]}</span></div>`));
+    row.querySelectorAll(".scaleopt").forEach(b=>b.onclick=()=>{
+      state.answers[q.key] = Number(b.dataset.v);
+      row.querySelectorAll(".scaleopt").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); nextBtn.disabled=false;
+    });
+  } else {
+    const list = el(`<div class="choicelist">${q.options.map((o,i)=>`<button class="choiceopt ${state.answers[q.key]===o.value?'sel':''}" data-i="${i}">${o.label}</button>`).join("")}</div>`);
+    body.appendChild(list);
+    list.querySelectorAll(".choiceopt").forEach((b,i)=>b.onclick=()=>{
+      state.answers[q.key]=q.options[i].value;
+      list.querySelectorAll(".choiceopt").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); nextBtn.disabled=false;
+    });
+  }
+  wrap.querySelector("#backBtn").onclick = ()=>{ if(state.qIndex>0){ state.qIndex--; render(); } };
+  nextBtn.onclick = ()=>{
+    if(state.qIndex < QUESTIONS.length-1){ state.qIndex++; render(); }
+    else { go("results"); }
+  };
+  return wrap;
+}
+
+function signalOf(score){ return score>=4 ? "Strong" : score===3 ? "Moderate" : "Low"; }
+function priorityOf(signal){ return signal==="Strong" ? "Maintain" : signal==="Moderate" ? "Medium" : "High"; }
+function tagClass(word){ return {Strong:"tag-strong",Moderate:"tag-mod",Low:"tag-low",High:"tag-high",Medium:"tag-med",Maintain:"tag-maintain"}[word]; }
+
+function computeProfile(){
+  const a = state.answers;
+  const rows = ORDER.map(k=>{
+    const signal = signalOf(a[k]);
+    return {key:k, label:DIMS[k].label, score:a[k], signal, priority:priorityOf(signal)};
+  });
+  const avg = ORDER.reduce((s,k)=>s+a[k],0)/ORDER.length;
+  const readiness = avg<2.5 ? "Emerging" : avg<3.5 ? "Developing" : avg<4.3 ? "Growing" : "Strong";
+
+  const h=a.help, o=a.ownership;
+  let type, typeNote;
+  if(h>=4 && o<=2){ type="Supported Explorer"; typeNote="Comfortable asking for help, still building the confidence to act independently."; }
+  else if(h<=2 && o>=4){ type="Independent Builder"; typeNote="A strong self-starter — worth checking they're asking for help when actually stuck, not just pushing through."; }
+  else if(h>=4 && o>=4){ type="Confident Contributor"; typeNote="Balances asking for support with taking initiative — a low-friction Month 1."; }
+  else if(h<=2 && o<=2){ type="Cautious Starter"; typeNote="Neither reaching for help nor acting independently yet — likely to stall quietly without check-ins."; }
+  else { type="Balanced Adapter"; typeNote="A fairly even mix of independence and support-seeking, without a strong lean either way."; }
+
+  const highs = rows.filter(r=>r.priority==="High").sort((x,y)=>x.score-y.score);
+  const meds = rows.filter(r=>r.priority==="Medium");
+  const strengths = rows.filter(r=>r.signal==="Strong").map(r=>r.label);
+
+  const path = [];
+  highs.forEach(r=> path.push(DIMS[r.key].module));
+  path.push("__CHECKIN__");
+  meds.forEach(r=> path.push(DIMS[r.key].module));
+  path.push("__REASSESS__");
+  const seen=new Set(); const dedup=path.filter(p=>{ if(seen.has(p)) return false; seen.add(p); return true; });
+
+  const priorityLabels = highs.length ? highs.map(r=>r.label).join(" and ") : (meds.length? meds.map(r=>r.label).join(" and ") : "no major gaps");
+  const summary = `${state.name || "This new joiner"} enters Month 1 as a ${type}. `
+    + (strengths.length ? `They're already strong on ${strengths.join(" and ")} — no need to spend onboarding time there. ` : ``)
+    + (highs.length ? `The clearest priority is ${priorityLabels}, so the first two weeks should lean on structured, low-ambiguity tasks with a named point of contact. ` : `There's no single urgent gap — Month 1 can move at a normal pace. `)
+    + typeNote;
+
+  return {rows, avg, readiness, type, typeNote, path:dedup, summary};
+}
+
+function gaugeColor(readiness){
+  return readiness==="Strong" ? "var(--teal)" : readiness==="Growing" ? "var(--teal)" : readiness==="Developing" ? "var(--amber)" : "var(--accent)";
+}
+
+function viewResults(){
+  const p = computeProfile();
+  const pct = Math.round(p.avg/5*100);
+  const color = gaugeColor(p.readiness);
+  const wrap = el(`<div class="wrap">
+    <div class="eyebrow">Onboarding Readiness Profile</div>
+    <div class="profilename">${p.type}</div>
+    <div class="profilenote">${p.typeNote}</div>
+    <div class="gaugewrap">
+      <div class="gauge" style="background:conic-gradient(${color} ${pct}%, var(--paper2) 0)">
+        <span><b>${p.avg.toFixed(1)}</b><small>of 5</small></span>
+      </div>
+      <div>
+        <div class="smallcaps">Overall readiness</div>
+        <div style="font-family:var(--serif);font-size:22px">${p.readiness}</div>
+      </div>
+    </div>
+
+    <div class="sectiontitle">Signals by area</div>
+    <table>
+      <tr><th>Area</th><th>Signal</th><th>Priority</th></tr>
+      ${p.rows.map(r=>`<tr><td>${r.label}</td><td><span class="tag ${tagClass(r.signal)}">${r.signal}</span></td><td><span class="tag ${tagClass(r.priority)}">${r.priority}</span></td></tr>`).join("")}
+    </table>
+
+    <div class="sectiontitle">Recommended Month-1 path</div>
+    <div class="pathlist">
+      ${p.path.map((step,i)=>{
+        const isCheckin = step==="__CHECKIN__", isReassess = step==="__REASSESS__";
+        const label = isCheckin ? "Manager check-in" : isReassess ? "Day 30 reassessment" : step;
+        return `<div class="pathitem"><div class="num ${isCheckin||isReassess?'check':''}">${i+1}</div><div class="t">${label}</div></div>`;
+      }).join("")}
+    </div>
+
+    <div class="sectiontitle">Manager summary</div>
+    <div class="summarybox">${p.summary}</div>
+
+    <div class="actions" style="margin-top:34px">
+      <button class="btn btn-ghost" id="retryBtn">Retake diagnostic</button>
+      <button class="btn btn-ghost" id="homeBtn">Back to start</button>
+    </div>
+  </div>`);
+  wrap.querySelector("#retryBtn").onclick = ()=> go("diagnostic");
+  wrap.querySelector("#homeBtn").onclick = ()=> go("welcome");
+  return wrap;
+}
+
+render();
+</script>
+</body>
+</html>
